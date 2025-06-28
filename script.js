@@ -35,7 +35,8 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        const apiUrl = `https://caospayment.shop/create_payment?user_id=${userId}&valor=${valor}`;
+        const targetUrl = `https://caospayment.shop/create_payment?user_id=${userId}&valor=${valor}`;
+        const apiUrl = `/api/proxy?apiUrl=${encodeURIComponent(targetUrl)}`;
 
         try {
             const response = await fetch(apiUrl);
@@ -69,7 +70,8 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        const apiUrl = `https://caospayment.shop/verify_payment?payment_id=${currentPaymentId}`;
+        const targetUrl = `https://caospayment.shop/verify_payment?payment_id=${currentPaymentId}`;
+        const apiUrl = `/api/proxy?apiUrl=${encodeURIComponent(targetUrl)}`;
 
         try {
             const response = await fetch(apiUrl);
