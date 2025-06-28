@@ -8,8 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const qrCodeImg = document.getElementById('qrCodeImg');
     const pixCopiaEColaTextarea = document.getElementById('pixCopiaECola');
     const paymentStatusP = document.getElementById('payment-status');
-    const taxaInfo = document.getElementById('taxa-info');
-    const valorFinalInfo = document.getElementById('valor-final-info');
+    const feeInfoP = document.getElementById('fee-info');
 
     let currentPaymentId = null;
 
@@ -18,11 +17,11 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!isNaN(valor) && valor > 0) {
             const taxa = 5.00 + (valor * 0.10);
             const valorFinal = valor - taxa;
-            taxaInfo.textContent = `Taxa de Entrada: R$ ${taxa.toFixed(2)}`;
-            valorFinalInfo.textContent = `Você recebe: R$ ${valorFinal.toFixed(2)}`;
-        } else {
-            taxaInfo.textContent = 'Taxa de Entrada: R$ 0.00';
-            valorFinalInfo.textContent = 'Você recebe: R$ 0.00';
+            if (feeInfoP) {
+                feeInfoP.textContent = `Taxa: R$ ${taxa.toFixed(2)} | Você recebe: R$ ${valorFinal.toFixed(2)}`;
+            }
+        } else if (feeInfoP) {
+            feeInfoP.textContent = '';
         }
     });
 
