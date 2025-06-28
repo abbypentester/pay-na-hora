@@ -120,15 +120,32 @@ section {
     text-align: center;
 }
 
-.form-section input[type="number"] {
+.generator-section .form-section .form-group {
+    margin-bottom: 1rem;
+    text-align: left;
+}
+
+.generator-section .form-section .form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    color: var(--text-color);
+}
+
+.generator-section .form-section .form-group input {
     width: 100%;
-    padding: 15px;
-    margin-bottom: 20px;
-    border-radius: 5px;
+    padding: 12px;
     border: 1px solid var(--border-color);
-    font-size: 20px;
-    text-align: center;
-    box-sizing: border-box;
+    border-radius: 8px;
+    font-size: 1rem;
+    box-sizing: border-box; /* Ensures padding doesn't affect width */
+}
+
+.generator-section .form-section .form-group small {
+    display: block;
+    margin-top: 0.5rem;
+    font-size: 0.8rem;
+    color: #888;
 }
 
 .form-section button {

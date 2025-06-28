@@ -9,8 +9,21 @@ document.addEventListener('DOMContentLoaded', () => {
     const pixCopiaEColaTextarea = document.getElementById('pixCopiaECola');
     const paymentStatusP = document.getElementById('payment-status');
     const feeInfoP = document.getElementById('fee-info');
+    const checkBalanceBtn = document.getElementById('checkBalanceBtn');
+    const balanceUserIdInput = document.getElementById('balanceUserId');
+    const balanceInfoDiv = document.getElementById('balance-info');
 
     let currentPaymentId = null;
+
+    // Função para gerar um ID de usuário único
+    const generateUniqueId = () => {
+        return 'user_' + Date.now() + Math.random().toString(36).substr(2, 9);
+    };
+
+    // Define um ID único quando a página carrega
+    if (userIdInput) {
+        userIdInput.value = generateUniqueId();
+    }
 
     valorInput.addEventListener('input', () => {
         const valor = parseFloat(valorInput.value);
@@ -27,7 +40,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     generateBtn.addEventListener('click', async () => {
         const valor = valorInput.value;
-        const userId = userIdInput.value || '6563398267'; // Default user_id as per example
+        const userId = userIdInput.value;
+
+        if (!userId) {
+            alert('Não foi possível gerar um ID de usuário. Recarregue a página.');
+            return;
+        }
 
         if (!valor || parseFloat(valor) < 1.06) {
             alert('Por favor, insira um valor de no mínimo R$1.06.');
@@ -85,12 +103,54 @@ document.addEventListener('DOMContentLoaded', () => {
             paymentStatusP.textContent = `Status: ${data.status_pagamento}`;
             if (data.status_pagamento === 'CONCLUIDA') {
                 paymentStatusP.style.color = 'green';
+
+                // Adicionar o valor ao saldo do usuário
+                const valor = parseFloat(valorInput.value);
+                const userId = userIdInput.value;
+                if (!isNaN(valor) && userId) {
+                    await fetch('/api/add-balance', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ userId, amount: valor }),
+                    });
+                }
             } else {
                 paymentStatusP.style.color = 'orange';
             }
 
         } catch (error) {
             alert(`Erro ao verificar pagamento: ${error.message}`);
+        }
+    });
+
+    checkBalanceBtn.addEventListener('click', async () => {
+        const userId = balanceUserIdInput.value;
+        if (!userId) {
+            alert('Por favor, insira um ID de carteira para consultar.');
+            return;
+        }
+
+        try {
+            const response = await fetch(`/api/get-balance?userId=${userId}`);
+            const data = await response.json();
+
+            if (data.error) {
+                throw new Error(data.error);
+            }
+
+            if (balanceInfoDiv) {
+                balanceInfoDiv.textContent = `Saldo disponível: R$ ${parseFloat(data.balance).toFixed(2)}`;
+                balanceInfoDiv.style.color = 'green';
+            }
+
+        } catch (error) {
+            if (balanceInfoDiv) {
+                balanceInfoDiv.textContent = `Erro ao consultar saldo: ${error.message}`;
+                balanceInfoDiv.style.color = 'red';
+            }
+            alert(`Erro ao consultar saldo: ${error.message}`);
         }
     });
 });

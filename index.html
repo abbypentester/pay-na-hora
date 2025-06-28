@@ -33,8 +33,15 @@
                     <h2>Gerar Cobrança PIX</h2>
                     <p>Preencha o valor e clique em gerar. É simples assim.</p>
                     <div class="form-section">
-                        <input type="number" id="valor" placeholder="R$ 0,00">
-                        <input type="hidden" id="userId" value="6563398267"> <!-- Default user_id hidden -->
+                        <div class="form-group">
+                            <label for="valor">Valor da Cobrança</label>
+                            <input type="number" id="valor" placeholder="R$ 0,00">
+                        </div>
+                        <div class="form-group">
+                            <label for="userId">ID da Sua Carteira Temporária</label>
+                            <input type="text" id="userId" readonly>
+                            <small>Este ID é único para sua sessão. Guarde-o para consultar seu saldo e solicitar saques.</small>
+                        </div>
                         <button id="generateBtn">Gerar QR Code</button>
                         <p id="fee-info" class="fee-info"></p>
                     </div>
@@ -69,6 +76,23 @@
                     <div class="feature-item">
                         <h3>Sem Cadastro, Sem App</h3>
                         <p>Use diretamente pelo navegador. Não precisa baixar nada nem preencher formulários de cadastro intermináveis.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="balance" class="generator-section">
+            <div class="container">
+                <div class="generator-box">
+                    <h2>Consultar Saldo / Solicitar Saque</h2>
+                    <p>Insira o ID da sua carteira para ver seu saldo disponível e solicitar o saque.</p>
+                    <div class="form-section">
+                        <div class="form-group">
+                            <label for="balanceUserId">ID da Carteira</label>
+                            <input type="text" id="balanceUserId" placeholder="Cole o ID da sua carteira aqui">
+                        </div>
+                        <button id="checkBalanceBtn">Consultar Saldo</button>
+                        <div id="balance-info" class="fee-info"></div>
                     </div>
                 </div>
             </div>
